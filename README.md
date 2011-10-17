@@ -1,5 +1,7 @@
 # Circular Queue
 
+[![Build Status](https://secure.travis-ci.org/alindeman/circular_queue.png)](http://travis-ci.org/alindeman/circular_queue)
+
 **circular_queue** *requires* Ruby 1.9 or a Ruby implementation that
 supports 1.9 syntax and standard library (e.g., JRuby in 1.9 mode;
 Rubinius 2.0 should work if/when Mutex#sleep is implemented).
