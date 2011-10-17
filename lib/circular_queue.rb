@@ -4,7 +4,7 @@ class CircularQueue
   attr_reader :capacity
 
   attr_reader :size
-  alias :length :size
+  alias length size
 
   def initialize(capacity)
     @capacity = capacity
@@ -22,8 +22,8 @@ class CircularQueue
       wakeup_next_waiter
     end
   end
-  alias :<<   :enq
-  alias :push :enq
+  alias <<   enq
+  alias push enq
 
   def enq!(item)
     @mutex.synchronize do
@@ -33,7 +33,7 @@ class CircularQueue
       wakeup_next_waiter
     end
   end
-  alias :push! :enq!
+  alias push! enq!
 
   def deq(non_block = false)
     @mutex.synchronize do
@@ -49,8 +49,8 @@ class CircularQueue
       end
     end
   end
-  alias :shift :deq
-  alias :pop   :deq
+  alias shift deq
+  alias pop   deq
 
   def clear
     @mutex.synchronize do
