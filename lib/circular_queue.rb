@@ -24,8 +24,14 @@ class CircularQueue
   alias :<<   :enq
   alias :push :enq
 
+  def enq!(item)
+    raise ThreadError.new("Queue is full") if full?
+    enq(item)
+  end
+  alias :push! :enq!
+
   def deq
-    raise ThreadError if empty?
+    raise ThreadError.new("Queue is empty") if empty?
 
     item = @data[@front]
 

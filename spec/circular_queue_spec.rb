@@ -30,6 +30,14 @@ describe CircularQueue do
 
       subject.size.should be_zero
     end
+
+    it "raises an error if the queue is full and enq! is used to add items" do
+      1.upto(capacity) { |i| subject.enq(i) }
+
+      expect {
+        subject.enq!(1)
+      }.to raise_error(ThreadError)
+    end
   end
 
   describe "removing items" do
@@ -51,6 +59,15 @@ describe CircularQueue do
       expect {
         subject.deq
       }.to raise_error(ThreadError)
+    end
+  end
+
+  describe "clearing the queue" do
+    it "removes all items from the queue" do
+      subject.enq(1)
+      subject.clear
+
+      subject.size.should be_zero
     end
   end
 end
