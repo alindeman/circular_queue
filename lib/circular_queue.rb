@@ -1,3 +1,5 @@
+require "thread"
+
 class CircularQueue
   attr_reader :capacity
 
@@ -20,6 +22,8 @@ class CircularQueue
   alias :push :enq
 
   def deq
+    raise ThreadError if empty?
+
     item = @data[@front]
 
     @size  -= 1
@@ -29,6 +33,15 @@ class CircularQueue
   end
   alias :shift :deq
   alias :pop   :deq
+
+  def clear
+    @size  = 0
+    @front = 0
+  end
+
+  def empty?
+    @size == 0
+  end
 
   private
 
