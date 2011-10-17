@@ -11,18 +11,15 @@ class CircularQueue
     @data     = Array.new(capacity)
 
     @mutex    = Mutex.new
+    @waiting  = Array.new
 
     clear
   end
 
   def enq(item)
     @mutex.synchronize do
-      @data[@back] = item
-
-      @size += 1 unless full?
-
-      @back += 1
-      @back %= @capacity
+      enq_item(item)
+      wakeup_next_waiter
     end
   end
   alias :<<   :enq
@@ -31,23 +28,25 @@ class CircularQueue
   def enq!(item)
     @mutex.synchronize do
       raise ThreadError.new("Queue is full") if full?
-      enq(item)
+
+      enq_item(item)
+      wakeup_next_waiter
     end
   end
   alias :push! :enq!
 
-  def deq
+  def deq(non_block = false)
     @mutex.synchronize do
-      raise ThreadError.new("Queue is empty") if empty?
+      while true
+        if empty?
+          raise ThreadError.new("Queue is empty") if non_block
 
-      item = @data[@front]
-
-      @size  -= 1
-
-      @front += 1
-      @front %= @capacity
-
-      item
+          @waiting.push(Thread.current) unless @waiting.include?(Thread.current)
+          @mutex.sleep
+        else
+          return deq_item
+        end
+      end
     end
   end
   alias :shift :deq
@@ -67,5 +66,37 @@ class CircularQueue
 
   def full?
     @size == @capacity
+  end
+
+  private
+
+  def enq_item(item)
+    @data[@back] = item
+
+    @size += 1 unless full?
+
+    @back += 1
+    @back %= @capacity
+  end
+
+  def deq_item
+    item = @data[@front]
+
+    @size  -= 1
+
+    @front += 1
+    @front %= @capacity
+
+    item
+  end
+
+  def wakeup_next_waiter
+    begin
+      if thread = @waiting.shift
+        thread.wakeup
+      end
+    rescue ThreadError
+      retry
+    end
   end
 end

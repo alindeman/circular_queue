@@ -41,11 +41,9 @@ describe CircularQueue do
   end
 
   describe "removing items" do
-    before do
-      1.upto(capacity) { |i| subject.enq(i) }
-    end
-
     it "removes items from the queue until the queue is empty" do
+      1.upto(capacity) { |i| subject.enq(i) }
+
       1.upto(capacity) do |i|
         subject.deq.should == i
       end
@@ -53,12 +51,38 @@ describe CircularQueue do
       subject.size.should be_zero
     end
 
-    it "raises a ThreadError if the queue is empty" do
-      subject.clear
+    context "when empty" do
+      context "non-blocking" do
+        it "raises a ThreadError if the queue is empty" do
+          subject.clear
 
-      expect {
-        subject.deq
-      }.to raise_error(ThreadError)
+          expect {
+            subject.deq(true)
+          }.to raise_error(ThreadError)
+        end
+      end
+
+      context "blocking" do
+        it "waits for another thread to add an item" do
+          # Another queue that is doing work is required or a deadlock will
+          # be detected
+          enqueue = false
+          done    = false
+
+          enqueue_thread = Thread.new do
+            until done
+              subject.enq(1) if enqueue
+            end
+          end
+
+          begin
+            enqueue = true
+            subject.deq.should == 1
+          ensure
+            done = true
+          end
+        end
+      end
     end
   end
 
