@@ -10,13 +10,16 @@ class CircularQueue
     @capacity = capacity
     @data     = Array.new(capacity)
 
-    @size     = 0
-    @front    = 0
+    clear
   end
 
   def enq(item)
-    @data[back] = item
-    @size += 1
+    @data[@back] = item
+
+    @size += 1 unless full?
+
+    @back += 1
+    @back %= @capacity
   end
   alias :<<   :enq
   alias :push :enq
@@ -27,7 +30,9 @@ class CircularQueue
     item = @data[@front]
 
     @size  -= 1
+
     @front += 1
+    @front %= @capacity
 
     item
   end
@@ -37,15 +42,14 @@ class CircularQueue
   def clear
     @size  = 0
     @front = 0
+    @back  = 0
   end
 
   def empty?
     @size == 0
   end
 
-  private
-
-  def back
-    (@front + @size) % @capacity
+  def full?
+    @size == @capacity
   end
 end

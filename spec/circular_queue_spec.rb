@@ -20,6 +20,16 @@ describe CircularQueue do
       subject.enq(1234)
       subject.size.should == 1
     end
+
+    it "presents the appearance of accepting infinite items" do
+      1.upto(capacity * 2) { |i| subject.enq(i) }
+
+      1.upto(capacity) do |i|
+        subject.deq.should == i + capacity
+      end
+
+      subject.size.should be_zero
+    end
   end
 
   describe "removing items" do
