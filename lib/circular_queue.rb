@@ -32,7 +32,7 @@ class CircularQueue
   alias length size
 
   # Creates a new queue of the specified capacity
-  # @param [Integer] the maximum capacity of the queue
+  # @param [Integer] capacity the maximum capacity of the queue
   def initialize(capacity)
     @capacity = capacity
     @data     = Array.new(capacity)
@@ -44,7 +44,7 @@ class CircularQueue
   end
 
   # Adds an item to the queue
-  # @param [Object] item to add
+  # @param [Object] item item to add
   def enq(item)
     @mutex.synchronize do
       enq_item(item)
@@ -55,7 +55,7 @@ class CircularQueue
   alias push enq
 
   # Adds an item to the queue, raising an error if the queue is full
-  # @param [Object] item to add
+  # @param [Object] item item to add
   # @raise [ThreadError] queue is full
   def enq!(item)
     @mutex.synchronize do
@@ -68,8 +68,8 @@ class CircularQueue
   alias push! enq!
 
   # Removes an item from the queue
-  # @param [Boolean] true to raise an error if the queue is empty; otherwise,
-  #                  waits for an item to arrive from another thread
+  # @param [Boolean] non_block true to raise an error if the queue is empty;
+  #                  otherwise, waits for an item to arrive from another thread
   # @raise [ThreadError] non_block was true and the queue was empty
   def deq(non_block = false)
     @mutex.synchronize do
