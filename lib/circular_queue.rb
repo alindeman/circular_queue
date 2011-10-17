@@ -68,6 +68,10 @@ class CircularQueue
     @size == @capacity
   end
 
+  def num_waiting
+    @waiting.length
+  end
+
   private
 
   def enq_item(item)
