@@ -19,8 +19,8 @@ require "thread"
 #     q << 3 # => [1, 2, 3]
 #
 #     # Elements are replaced when the queue reaches capacity
-#     q << 4 # => [4, 2, 3]
-#     q << 5 # => [4, 5, 3]
+#     q << 4 # => [2, 3, 4]
+#     q << 5 # => [3, 4, 5]
 class CircularQueue
   # Returns the maximum number of elements that can be enqueued
   # @return [Integer]
