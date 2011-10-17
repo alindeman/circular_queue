@@ -1,5 +1,9 @@
 # Circular Queue
 
+**circular_queue** *requires* Ruby 1.9 or a Ruby implementation that
+supports 1.9 syntax and standard library (e.g., JRuby or Rubinius in 1.9
+mode).
+
 Documentation, including example use, is covered in the [API
 Docs](http://rdoc.info/github/alindeman/circular_queue/master/CircularQueue).
 
