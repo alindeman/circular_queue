@@ -1,7 +1,7 @@
 rvm:
   - 1.9.2
   - 1.9.3
-  - rbx-2.0
+  # - rbx-2.0 <https://github.com/rubinius/rubinius/issues/811>
   - jruby
 env:
   - JRUBY_OPTS="--1.9" RBXOPT="-X19"
