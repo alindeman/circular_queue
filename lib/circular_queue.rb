@@ -120,7 +120,12 @@ class CircularQueue
   def enq_item(item)
     @data[@back] = item
 
-    @size += 1 unless full?
+    if full?
+      @front += 1
+      @front %= @capacity
+    else
+      @size += 1
+    end
 
     @back += 1
     @back %= @capacity

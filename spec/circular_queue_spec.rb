@@ -84,6 +84,19 @@ describe CircularQueue do
         end
       end
     end
+
+    context "when full" do
+      it "overrides elements at the beginning of the queue" do
+        1.upto(capacity) { |i| subject.enq(i) }
+
+        # Queue is full
+        subject.enq(capacity + 1)
+
+        # Returns the item that's been waiting the longest, not the overridden
+        # value. 1 was overridden.
+        subject.pop.should == 2
+      end
+    end
   end
 
   describe "clearing the queue" do
