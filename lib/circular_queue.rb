@@ -109,10 +109,37 @@ class CircularQueue
     @size == @capacity
   end
 
+  # Returns thee first/oldest item in the queue
+  # @return [Object]
+  # Peek at first item without removing
+  def front
+    @mutex.synchronize do
+      @data[@front]
+    end
+  end
+
+  # Returns the last/most recent item in the queue
+  # @return [Object] 
+  # Peek at last item without removing
+  def back
+    @mutex.synchronize do
+      @data[(@back - 1) % @capacity]
+    end
+  end
+
   # Returns the number of threads waiting for items to arrive in the queue
   # @return [Integer] number of threads waiting
   def num_waiting
     @waiting.length
+  end
+
+  # Returns the data in the queue
+  # @return [Array] the queue
+  # Allows for easy iteration of queue from front to back
+  def data
+    @mutex.synchronize do
+      @data.clone.rotate @front
+    end
   end
 
   private
