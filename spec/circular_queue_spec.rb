@@ -13,12 +13,25 @@ describe CircularQueue do
   describe "adding items" do
     it "accepts new items" do
       subject.enq(1234)
+      subject.front.should == 1234
+      subject.back.should == 1234
       subject.deq.should == 1234
     end
 
     it "increases its size when a new item is added" do
       subject.enq(1234)
       subject.size.should == 1
+    end
+
+    it "allows for peeking at first and last items" do
+      subject.enq(1)
+
+      subject.front.should == 1
+      subject.back.should == 1
+
+      2.upto(capacity) { |i| subject.enq(i) }
+      subject.front.should == 1
+      subject.back.should == capacity
     end
 
     it "presents the appearance of accepting infinite items" do
