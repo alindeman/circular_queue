@@ -1,3 +1,4 @@
+bin/
 *.gem
 .bundle
 Gemfile.lock
