@@ -138,7 +138,10 @@ class CircularQueue
   # Allows for easy iteration of queue from front to back
   def data
     @mutex.synchronize do
-      @data.clone.rotate @front
+      @data.clone.tap do |data|
+        data.rotate!(@front)
+        data.slice!(@size..-1)
+      end
     end
   end
 

@@ -120,4 +120,15 @@ describe CircularQueue do
       subject.size.should be_zero
     end
   end
+
+  describe "data" do
+    it "allows taking a snapshot of the data in the queue" do
+      subject.enq(1)
+      subject.enq(2)
+      subject.enq(3)
+      subject.deq
+
+      subject.data.should == [2, 3]
+    end
+  end
 end
