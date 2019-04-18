@@ -1,5 +1,3 @@
-require "thread"
-
 # A thread-safe queue with a size limitation. When more elements than the
 # capacity are added, the queue either loops back on itself (removing the
 # oldest elements first) or raises an error (if `enq!` is used).
@@ -38,7 +36,7 @@ class CircularQueue
     @data     = Array.new(capacity)
 
     @mutex    = Mutex.new
-    @waiting  = Array.new
+    @waiting  = []
 
     clear
   end
@@ -73,7 +71,7 @@ class CircularQueue
   # @raise [ThreadError] non_block was true and the queue was empty
   def deq(non_block = false)
     @mutex.synchronize do
-      while true
+      loop do
         if empty?
           raise ThreadError.new("Queue is empty") if non_block
 
@@ -119,7 +117,7 @@ class CircularQueue
   end
 
   # Returns the last/most recent item in the queue
-  # @return [Object] 
+  # @return [Object]
   # Peek at last item without removing
   def back
     @mutex.synchronize do
@@ -173,12 +171,10 @@ class CircularQueue
   end
 
   def wakeup_next_waiter
-    begin
-      if thread = @waiting.shift
-        thread.wakeup
-      end
-    rescue ThreadError
-      retry
+    if thread = @waiting.shift
+      thread.wakeup
     end
+  rescue ThreadError
+    retry
   end
 end

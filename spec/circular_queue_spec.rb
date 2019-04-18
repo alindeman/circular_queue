@@ -82,7 +82,7 @@ describe CircularQueue do
           enqueue = false
           done    = false
 
-          enqueue_thread = Thread.new do
+          Thread.new do
             until done
               subject.enq(1) if enqueue
             end
