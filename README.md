@@ -15,6 +15,8 @@ Older Rubies, back to Ruby 1.9, *might* work, but are not officially supported.
 
 Documentation, including example use, is covered in the [API Docs][api-docs].
 
+### [Changelog](CHANGELOG.md)
+
 ### [License](LICENSE.md)
 
 [api-docs]: http://rdoc.info/github/alindeman/circular_queue/master/CircularQueue
