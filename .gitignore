@@ -1,7 +1,9 @@
-bin/
 *.gem
 .bundle
-Gemfile.lock
-pkg/*
-doc
 .yardoc
+Gemfile.lock
+/tags
+/bin/
+/doc/
+/pkg/*
+/spec/failures.txt
