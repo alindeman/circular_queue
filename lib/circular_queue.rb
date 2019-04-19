@@ -43,10 +43,12 @@ class CircularQueue
 
   # Adds an item to the queue
   # @param [Object] item item to add
+  # @return [CircularQueue] the queue itself
   def enq(item)
     @mutex.synchronize do
       enq_item(item)
       wakeup_next_waiter
+      self
     end
   end
   alias <<   enq
@@ -55,12 +57,14 @@ class CircularQueue
   # Adds an item to the queue, raising an error if the queue is full
   # @param [Object] item item to add
   # @raise [ThreadError] queue is full
+  # @return [CircularQueue] the queue itself
   def enq!(item)
     @mutex.synchronize do
       raise ThreadError.new("Queue is full") if full?
 
       enq_item(item)
       wakeup_next_waiter
+      self
     end
   end
   alias push! enq!
@@ -87,11 +91,13 @@ class CircularQueue
   alias pop   deq
 
   # Removes all items from the queue
+  # @return [CircularQueue] the queue itself
   def clear
     @mutex.synchronize do
       @size  = 0
       @front = 0
       @back  = 0
+      self
     end
   end
 
