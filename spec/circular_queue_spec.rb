@@ -16,6 +16,11 @@ RSpec.describe CircularQueue do
       expect(queue.deq).to eq(1234)
     end
 
+    it "maintains the same API as Queue, returning itself" do
+      expect(queue.enq(1)).to eq(queue)
+      expect(queue.enq!(2)).to eq(queue)
+    end
+
     it "increases its size when a new item is added" do
       queue.enq(1234)
       expect(queue.size).to eq(1)
@@ -116,6 +121,10 @@ RSpec.describe CircularQueue do
       queue.clear
 
       expect(queue.size).to be_zero
+    end
+
+    it "maintains the same API as Queue, returning itself" do
+      expect(queue.clear).to eq(queue)
     end
   end
 
