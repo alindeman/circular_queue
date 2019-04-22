@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |s|
   s.name        = "circular_queue"
-  s.version     = "1.0.0"
+  s.version     = "1.0.1"
   s.authors     = ["Andy Lindeman"]
   s.email       = ["alindeman@gmail.com"]
 
